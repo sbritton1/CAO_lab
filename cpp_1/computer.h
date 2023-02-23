@@ -1,6 +1,8 @@
 #ifndef COMPUTER
 #define COMPUTER
 
+#include "program.h"
+
 class computer{
 private:
     // private class variables
@@ -13,9 +15,15 @@ public:
     // public function prototypes
     computer(double, double, double, double, double);
 
-    void printStats();
+    void printStats(void);
 
-    double calculateGlobalCPI();
+    double calculateGlobalCPI(void);
+
+    double calculateExecutionTime(program);
+
+    double calculateMIPS(void);
+
+    double calculateMIPS(program);
 };
 
 #endif

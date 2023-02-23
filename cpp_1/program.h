@@ -2,7 +2,7 @@
 #define Program
 
 class program{
-private:
+public:
     // private class variables
     int numArith;
     int numStore;
@@ -13,6 +13,7 @@ private:
 public:
     // public function prototypes
     program(int, int, int, int);
+    program(int, double, double, double);
 
     void printStats();
 
