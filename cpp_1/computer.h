@@ -1,5 +1,5 @@
-#ifndef Computer
-#define Computer
+#ifndef COMPUTER
+#define COMPUTER
 
 class computer{
 private:

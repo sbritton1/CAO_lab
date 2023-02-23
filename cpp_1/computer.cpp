@@ -10,13 +10,13 @@ computer::computer(double i_clockRateGHz, double i_cpiArith, double i_cpiStore, 
 }
 
 void computer::printStats(void){
-    std::cout << "Clock Rate (GHz): " << clockRateGHz << "\n" << "CPI Arithmetic : " << cpiArith << "\n" << "CPI Store: " << cpiStore << "\n" << "CPI Load: " << cpiLoad << "\n" << "CPI Branch" << cpiBranch << "\n";
+    std::cout << "Clock Rate (GHz): " << clockRateGHz << "\n" << "CPI Arithmetic : " << cpiArith << "\n" << "CPI Store: " << cpiStore << "\n" << "CPI Load: " << cpiLoad << "\n" << "CPI Branch: " << cpiBranch << "\n";
 
 
 }
 
 double computer::calculateGlobalCPI(){
-    double GlobalCPI = (cpiArith + cpiStore + cpiLoad + cpiBranch)/4;
+    double GlobalCPI = (cpiArith + cpiStore + cpiLoad + cpiBranch)/4.0;
     return GlobalCPI;
 }
 
