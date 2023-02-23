@@ -11,7 +11,7 @@ program::program(int i_numArith, int i_numStore, int i_numLoad, int i_numBranch)
 }
 
 void program::printStats(void){
-    std::cout << numArith << "\n";
+        std::cout << "Clock Rate (GHz): " << clockRateGHz << "\n" << "CPI Arithmetic : " << cpiArith << "\n" << "CPI Store: " << cpiStore << "\n" << "CPI Load: " << cpiLoad << "\n" << "CPI Branch" << cpiBranch << "\n";
 }
 
 double computer::calculateGlobalCPI(){
