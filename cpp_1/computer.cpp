@@ -16,13 +16,9 @@ void computer::printStats(void){
 }
 
 double computer::calculateGlobalCPI(){
-    // ! NOT DONE
     double GlobalCPI = (cpiArith + cpiStore + cpiLoad + cpiBranch)/4;
     return GlobalCPI;
 }
 
 
-int main(void){
-    computer cmptr(15.0, 2.0, 2.5, 3.0, 3.5);
-    cmptr.printStats();
-}
+

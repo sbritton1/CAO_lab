@@ -16,6 +16,7 @@ void program::printStats(void){
 
 
 int main(void){
-    computer cmptr(15.0, 2.0, 2.5, 3.0, 3.5);
-    cmptr.printStats();
+    
+    
+    return 0;
 }
