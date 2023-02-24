@@ -1,3 +1,7 @@
 *.out
 *.layout
 *.cbp
+
+.vscode
+
+**/assignment*
