@@ -1,50 +1,9 @@
 #include <iostream>
 
 #include "computer.h"
-#include "computer.cpp"
-
 #include "program.h"
-#include "program.cpp"
 
 int main(void){
-    /* 
-    // computer 1
-    computer cmptr1(15.0, 2.0, 2.5, 3.0, 3.5);
-    cmptr1.printStats();
-    std::cout << "Global CPI computer 1: " << cmptr1.calculateGlobalCPI() << "\n";
-
-    std::cout << "\n";
-
-
-    // computer 2
-    computer cmptr2(7.0, 5.0, 4.0, 9.0, 6.5);
-    cmptr2.printStats();
-    std::cout << "Global CPI computer 2: " << cmptr2.calculateGlobalCPI() << "\n";
-
-    std::cout << "\n";
-
-    // program 1
-    program prog1(41231, 22352, 27812, 27812);
-    prog1.printStats();
-
-    std::cout << "\n";
-
-    // program 2 with fractions
-    program prog2(8, 0.25, 0.25, 0.25);
-    prog2.printStats();
-
-    std::cout << "\n";
-
-    // test calculate execution time
-    std::cout << cmptr1.calculateExecutionTime(prog1) << "\n";
-
-    // test mips wihtout program
-    std::cout << cmptr1.calculateMIPS() << "\n";
-
-    // test mips with program
-    std::cout << cmptr1.calculateMIPS(prog1) << "\n";
-    */
-
     computer computer1(1, 2, 2, 3, 4);
     computer computer2(1.2, 2, 3, 4, 3);
     computer computer3(2, 2, 2, 4, 6);
