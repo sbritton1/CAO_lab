@@ -39,7 +39,7 @@ int Registers::getPC(void){
 }
 
 void Registers::print(){
-    cout << "Content of the registers:\n";
+    cout << "Content of the registers at PC = "<< PC <<":\n";
     
     cout << "\t$0: 0\n";
 

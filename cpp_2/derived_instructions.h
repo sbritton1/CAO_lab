@@ -10,7 +10,11 @@ using namespace std;
 class AddInstruction: public Instruction
 {
 public:
-    AddInstruction(int, int, int);
+    AddInstruction(int i_op1, int i_op2, int i_op3){
+        op1 = i_op1;
+        op2 = i_op2;
+        op3 = i_op3;
+    }
 
     void disassemble(){
         cout << "add $" << op1 << ", $" << op2 << ", $" << op3 << "\n"; 
@@ -31,7 +35,11 @@ public:
 class SubInstruction: public Instruction
 {
 public:
-    SubInstruction(int, int, int);
+    SubInstruction(int i_op1, int i_op2, int i_op3){
+        op1 = i_op1;
+        op2 = i_op2;
+        op3 = i_op3;
+    }
 
     void disassemble(){
         cout << "sub $" << op1 << ", $" << op2 << ", $" << op3 << "\n"; 
@@ -52,7 +60,11 @@ public:
 class OriInstruction: public Instruction
 {
 public:
-    OriInstruction(int, int, int);
+    OriInstruction(int i_op1, int i_op2, int i_op3){
+        op1 = i_op1;
+        op2 = i_op2;
+        op3 = i_op3;
+    }
 
     void disassemble(){
         cout << "ori $" << op1 << ", $" << op2 << ", " << op3 << "\n"; 
@@ -61,10 +73,9 @@ public:
     int execute (Registers * regs){
         // get register values
         int reg2 = regs->getRegister(op2);
-        int reg3 = regs->getRegister(op3);
 
         // set register to the bitwise or of the other two register values
-        regs->setRegister(op1, reg2 | reg3);
+        regs->setRegister(op1, reg2 | op3);
 
         return regs->getPC() + 1;
     }
@@ -73,7 +84,11 @@ public:
 class BrneInstruction: public Instruction
 {
 public:
-    BrneInstruction(int, int, int);
+    BrneInstruction(int i_op1, int i_op2, int i_op3){
+        op1 = i_op1;
+        op2 = i_op2;
+        op3 = i_op3;
+    }
 
     void disassemble(){
         cout << "brne $" << op1 << ", $" << op2 << ", " << op3 << "\n"; 
@@ -88,7 +103,7 @@ public:
 
         if (reg1 != reg2){
             // return the PC-relative address
-            return branch_address;
+            return regs->getPC() + branch_address + 1;
         }
         return regs->getPC() + 1;
     }
