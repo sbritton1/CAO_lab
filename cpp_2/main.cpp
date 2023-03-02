@@ -1,6 +1,7 @@
 #include "simulator.h"
 #include "program.h"
 #include "registers.h"
+#include "derived_instructions.h"
 
 void loadProgram (Program *program)
 {

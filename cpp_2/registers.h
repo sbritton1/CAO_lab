@@ -4,15 +4,17 @@
 class Registers
 {
 private:
-    int regNum;
-    int value;
+    int regs[31];
+    int PC;
 public:
-    Registers(int, int);
+    Registers();
 
-    void setRegister(regNum, value);
-    int getRegister(regNum);
-    void setPC(value);
+    void setRegister(int, int);
+    int getRegister(int);
+    void setPC(int);
     int getPC();
+
+    void print();
 };
 
 #endif	/* _REGISTERS_H_ */
