@@ -51,22 +51,64 @@ i_sort:						# Arguments: unsorted array base addres and length of the unsorted 
 		# branch if i >= length
 for_sort:	bge	$s3, $s1, exit_sort	
 						#	2.1: get the position of array[i] in the sorted array using binary search
+		# set arugments to: sorted array base addres and length of the sorted array
+		move 	$a0, $s2
+		move	$a1, $s3
 		
-						#	2.2: place array[i] at the correct position in the sorted array
-		j for_sort
+		# call binary search
+		jal	b_search
+		
+		# extract arguments
+		move 	$t0, $a0
+		
+						#	2.2: place array[i] at the correct position in the sorted array using the insert function
+		# set arguments to: array base address, array length before insertion, element to insert, index to insert at
+		move	$a0, $s2
+		move	$a1, $s3
+		move	$a2, 
+		
+		
+		# increment i and jump back
+		addi	$s3, $s3, 1
+		j 	for_sort
 exit_sort:
-
 						# Step 3: Loop size amount of times:
-						#	3.1 set array[i] = sorted_array[i]
-		# TODO!!!!!! restore values 
-		add	$sp, $sp, $s0
+		# set i to zero again
+		move	$s3, $zero
 		
+		# branch if i >= length
+for_copy	bge	$s3, $s1, exit_copy
+						#	3.1 set array[i] = sorted_array[i]
+		
+		# increment i and jump back
+		addi	$s3, $s3, 1
+		j 	for_copy
+exit_copy:	
+
+						
+		# TODO!!!!!! restore values 
+		
+		# load s3
+		lw	$s3, 0($sp)
+		addi	$sp, $sp, 4
+		
+		# free up the array
+		#.....
+		
+		# load s2
+		lw	$s2, 0($sp)
+		addi	$sp, $sp, 4
+		
+		# load s1
 		lw	$s1, 0($sp)
 		addi	$sp, $sp, 4
 		
+		# load s0
 		lw	$s0, 0($sp)
-		addi	$sp, $sp, 4	
+		addi	$sp, $sp, 4
+		
 						# Step 4: return
+		jr	$ra
 						
 		
 
