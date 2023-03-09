@@ -1,26 +1,27 @@
 		.text
 		j	main			# Jump to main-routine
 
-insert:						# Arguments: array base address, array length before insertion, element to insert, index to insert at
+insert:						
 		
-		move 	$t0, $a1
-		addi	$t0, $t0, -1
-		move	$t1, $a3
+		move 	$t0, $a1		#set t0 equal to a1 (length)
+		addi	$t0, $t0, -1		#make t0 to value of j
+		move	$t1, $a3		#give t1 value of i
 						
-for_insert:	blt	$t0, $t1, exit_insert														# Step 1: Loop from end of array to i:
-		sll	$t2, $t0, 2				#	1.1:  a[j+1]=a[j] just shift over the element
-		add	$t3, $t2, $a0
-		lw	$t4, 0($t3)				# Step 2: Insert element a[i]=element
-		addi	$t3, $t3, 4
-		sw	$t4, 0($t3)
+for_insert:	blt	$t0, $t1, exit_insert	#if j is less then i, exit loop												
+		sll	$t2, $t0, 2		#offset of j		
+		add	$t3, $t2, $a0		#get address of a[j]
+		lw	$t4, 0($t3)		#load word from a[j]		
+		addi	$t3, $t3, 4		#j + 1
+		sw	$t4, 0($t3)		#store a[j] in a[j+1]
 		
-		addi	$t0, $t0, -1;				# Step 3: return
-		j 	for_insert
+		addi	$t0, $t0, -1;		#j-1		
+		j 	for_insert		#jump back to beginning of loop
 exit_insert:	
-		sll	$t5, $a3, 2
+		sll	$t5, $a3, 2		#obtain address of a[i]
 		add	$t6, $a0, $t5
-		lw	$a2, 0($t6)
-		jr	$ra				
+		lw	$a2, 0($t6)		#store elem in a[i]
+		jr	$ra			
+			
 b_search:					# Arguments: sorted array base addres and length of the sorted array 
 						# Step 1: set low to -1, high to length
 						# Step 2: Loop while low < high - 1
