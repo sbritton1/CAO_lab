@@ -19,22 +19,57 @@ for_insert:	blt	$t0, $t1, exit_insert	#if j is less then i, exit loop
 exit_insert:	
 		sll	$t5, $a3, 2		#obtain address of a[i]
 		add	$t6, $a0, $t5
-<<<<<<< HEAD
-		lw	$a2, 0($t6)		#store elem in a[i]
-		jr	$ra			
-			
-b_search:					# Arguments: sorted array base addres and length of the sorted array 
-=======
-		lw	$a2, 0($t6)
+		sw	$a2, 0($t6)		#store elem in a[i]
+
 		jr	$ra	
 
 			
 b_search:					# Arguments: sorted array base addres and length of the sorted array and the element to find the sorted index of
->>>>>>> main
+
+		sw	$a2, 0($t6)
+
+		jr	$ra	
+
+			
+b_search:					# Arguments: sorted array base addres, length of the sorted array and the element to find the sorted index of
+		# to will be low
+		# t1 will be mid
+		# t2 will be high
+		# t3 will be high - 1
+		# t4 will be low + high
+		# t5 will be 2
+		
 						# Step 1: set low to -1, high to length
+		# set variables
+		addi 	$t0, $zero, -1
+		move 	$t2, $a1 
+		addi 	$t5, $zero, 2
+		
+			
 						# Step 2: Loop while low < high - 1
+search_loop:	addi 	$t3, $t2, -1
+		bge	$t0, $t3, exit_search 
 						#	2.1: mid = (low + high) / 2
+		add	$t4, $t0, $t2
+		div	$t1, $t4, $t5
 						#	2.2: set high to mid if a[mid] is higher than the given element, else set low to mid
+		# get a[mid]
+		sll	$t6, $t6, 2
+		add	$t7, $a0, $t6
+		lw	$t8, 0($t7)
+		
+		blt	$t8, $a2, else
+		# set high to mid
+		move	$t2, $t1
+		j 	search_loop
+else:		# set low to mid
+		move	$t0, $t1
+		j 	search_loop
+		
+exit_search:	
+		# set return register to high
+		move 	$v0, $t2
+		jr	$ra
 						# Step 3: return high
 
 
@@ -91,7 +126,7 @@ for_sort:	bge	$s3, $s1, exit_sort
 		jal	b_search
 		
 		# extract arguments
-		move 	$t0, $a0
+		move 	$t0, $v0
 						#	2.2: place array[i] at the correct position in the sorted array using the insert function
 		# set arguments to: sorted array base address, sorted array length before insertion, element to insert, index to insert at 
 		move	$a0, $s2
