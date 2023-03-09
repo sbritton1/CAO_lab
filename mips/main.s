@@ -45,7 +45,6 @@ b_search:					# Arguments: sorted array base addres, length of the sorted array 
 		move 	$t2, $a1 
 		addi 	$t5, $zero, 2
 		
-			
 						# Step 2: Loop while low < high - 1
 search_loop:	addi 	$t3, $t2, -1
 		bge	$t0, $t3, exit_search 
@@ -67,11 +66,11 @@ else:		# set low to mid
 		move	$t0, $t1
 		j 	search_loop
 		
-exit_search:	
+exit_search:					# Step 3: return high
 		# set return register to high
 		move 	$v0, $t2
 		jr	$ra
-						# Step 3: return high
+						
 
 
 isort:						# Arguments: unsorted array base addres and length of the unsorted array
@@ -100,7 +99,7 @@ isort:						# Arguments: unsorted array base addres and length of the unsorted a
 		sw	$s4, 0($sp)
 						# Step 1: Make an empty array with the same size
 		# make an empty array b
-		# $s2=length*4
+		# s2 = length * 4
 		sll	$s2, $a1, 2
 		# This instruction creates a stack frame large enough to contain the array		
 		sub	$sp, $sp, $s2
@@ -122,7 +121,7 @@ for_sort:	bge	$s3, $s1, exit_sort
 		 
 		# set arugments to: sorted array base addres and length of the sorted array and the element to find the sorted index of
 		move 	$a0, $s2
-		move	$a1, $s1
+		move	$a1, $s3
 		move	$a2, $s4
 		
 		# store return address
@@ -143,7 +142,7 @@ for_sort:	bge	$s3, $s1, exit_sort
 		move	$a0, $s2
 		move	$a1, $s3
 		move	$a2, $s4
-		move	$a3, $t3
+		move	$a3, $t0
 		
 		# store return address
 		addi	$sp, $sp, -4
