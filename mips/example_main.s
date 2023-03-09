@@ -1,5 +1,3 @@
-# make functions for sort		
-		
 		.text
 		j	main			# Jump to main-routine
 
