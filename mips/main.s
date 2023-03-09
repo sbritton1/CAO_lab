@@ -2,12 +2,25 @@
 		j	main			# Jump to main-routine
 
 insert:						# Arguments: array base address, array length before insertion, element to insert, index to insert at
-						# Step 1: Loop from end of array to i:
-						#	1.1:  a[j+1]=a[j] just shift over the element
-						# Step 2: Insert element a[i]=element
-						# Step 3: return
 		
+		move 	$t0, $a1
+		addi	$t0, $t0, -1
+		move	$t1, $a3
 						
+for_insert:	blt	$t0, $t1, exit_insert														# Step 1: Loop from end of array to i:
+		sll	$t2, $t0, 2				#	1.1:  a[j+1]=a[j] just shift over the element
+		add	$t3, $t2, $a0
+		lw	$t4, 0($t3)				# Step 2: Insert element a[i]=element
+		addi	$t3, $t3, 4
+		sw	$t4, 0($t3)
+		
+		addi	$t0, $t0, -1;				# Step 3: return
+		j 	for_insert
+exit_insert:	
+		sll	$t5, $a3, 2
+		add	$t6, $a0, $t5
+		lw	$a2, 0($t6)
+		jr	$ra				
 b_search:					# Arguments: sorted array base addres and length of the sorted array 
 						# Step 1: set low to -1, high to length
 						# Step 2: Loop while low < high - 1
