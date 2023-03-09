@@ -19,10 +19,18 @@ for_insert:	blt	$t0, $t1, exit_insert	#if j is less then i, exit loop
 exit_insert:	
 		sll	$t5, $a3, 2		#obtain address of a[i]
 		add	$t6, $a0, $t5
+<<<<<<< HEAD
 		lw	$a2, 0($t6)		#store elem in a[i]
 		jr	$ra			
 			
 b_search:					# Arguments: sorted array base addres and length of the sorted array 
+=======
+		lw	$a2, 0($t6)
+		jr	$ra	
+
+			
+b_search:					# Arguments: sorted array base addres and length of the sorted array and the element to find the sorted index of
+>>>>>>> main
 						# Step 1: set low to -1, high to length
 						# Step 2: Loop while low < high - 1
 						#	2.1: mid = (low + high) / 2
@@ -31,56 +39,68 @@ b_search:					# Arguments: sorted array base addres and length of the sorted arr
 
 
 i_sort:						# Arguments: unsorted array base addres and length of the unsorted array
-		# store s0
+		# s0 will be the argument: base addres of a
+		# s1 will be the argument: length
+		# s2 will be: base address of b
+		# s3 will be: i
+		# s4 will be: a[i]
+		
+		# store s0 and s1 on stack
 		addi	$sp, $sp, -4		
 		sw	$s0, 0($sp)
-		
-		# store s1
 		addi	$sp, $sp, -4		
 		sw	$s1, 0($sp)
 		
 		# store arguments
 		move 	$s0, $a0
 		move	$s1, $a1
-						# Step 1: Make an empty array with the same size
-		# store s2
+		
+		# store s2, s3 and s4 on stack
 		addi	$sp, $sp, -4		
 		sw	$s2, 0($sp)
-		
+		addi	$sp, $sp, -4		
+		sw	$s3, 0($sp)
+		addi	$sp, $sp, -4		
+		sw	$s4, 0($sp)
+						# Step 1: Make an empty array with the same size
+		# make an empty array b
 		# $s2=length*4
 		sll	$s2, $a1, 2
 		# This instruction creates a stack frame large enough to contain the array		
 		sub	$sp, $sp, $s2
 		# store the base addres of b in s2
-		move	$s2, $sp		
+		move	$s2, $sp				
 				
 						# Step 2: Loop size amount of times:
-		# store s3
-		addi	$sp, $sp, -4		
-		sw	$s3, 0($sp)
-		
 		# use s3 as i and set it to zero
 		move	$s3, $zero
 		
 		# branch if i >= length
 for_sort:	bge	$s3, $s1, exit_sort	
 						#	2.1: get the position of array[i] in the sorted array using binary search
-		# set arugments to: sorted array base addres and length of the sorted array
+		# get a[i]
+		add 	$t3, $s0, $s3
+		lw	$s4, 0($t3)
+		 
+		# set arugments to: sorted array base addres and length of the sorted array and the element to find the sorted index of
 		move 	$a0, $s2
-		move	$a1, $s3
+		move	$a1, $s1
+		move	$a2, $s4
 		
 		# call binary search
 		jal	b_search
 		
 		# extract arguments
 		move 	$t0, $a0
-		
 						#	2.2: place array[i] at the correct position in the sorted array using the insert function
-		# set arguments to: array base address, array length before insertion, element to insert, index to insert at
+		# set arguments to: sorted array base address, sorted array length before insertion, element to insert, index to insert at 
 		move	$a0, $s2
 		move	$a1, $s3
-		move	$a2, 
+		move	$a2, $s4
+		move	$a3, $t0
 		
+		# call insertion
+		jal insertion		
 		
 		# increment i and jump back
 		addi	$s3, $s3, 1
@@ -93,31 +113,41 @@ exit_sort:
 		# branch if i >= length
 for_copy	bge	$s3, $s1, exit_copy
 						#	3.1 set array[i] = sorted_array[i]
+		# get address offset of i
+		sll 	$t0, $s3, 2
+		
+		# get address of sorted_array[i]
+		add	$t1, $s2, $t0
+		
+		# get sorted_array[i]
+		lw	$t2, 0($t1)
+		
+		# get address of array[i]
+		add 	$t3, $s0, $t0
+		
+		# set array[i] to sorted_array[i]
+		sw	$t2, 0($t3)  
 		
 		# increment i and jump back
 		addi	$s3, $s3, 1
 		j 	for_copy
 exit_copy:	
+		# t0 = length * 4	
+		sll	$t0, $s1, 2
+		# delete b array
+		add	$sp, $s2, $t0
 
-						
-		# TODO!!!!!! restore values 
+						 
 		
-		# load s3
-		lw	$s3, 0($sp)
+		# load s4, s3, s2, s1, s0 back from stack
+		lw	$s4, 0($sp)
 		addi	$sp, $sp, 4
-		
-		# free up the array
-		#.....
-		
-		# load s2
+		lw	$s3, 0($sp)
+		addi	$sp, $sp, 4		
 		lw	$s2, 0($sp)
 		addi	$sp, $sp, 4
-		
-		# load s1
 		lw	$s1, 0($sp)
 		addi	$sp, $sp, 4
-		
-		# load s0
 		lw	$s0, 0($sp)
 		addi	$sp, $sp, 4
 		
