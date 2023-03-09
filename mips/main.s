@@ -2,6 +2,7 @@
 		j	main			# Jump to main-routine
 
 insert:						
+		# t0 is j = length - 1
 		
 		move 	$t0, $a1		#set t0 equal to a1 (length)
 		addi	$t0, $t0, -1		#make t0 to value of j
@@ -14,23 +15,19 @@ for_insert:	blt	$t0, $t1, exit_insert	#if j is less then i, exit loop
 		addi	$t3, $t3, 4		#j + 1
 		sw	$t4, 0($t3)		#store a[j] in a[j+1]
 		
-		addi	$t0, $t0, -1;		#j-1		
+		subi	$t0, $t0, 1		#j-1		
 		j 	for_insert		#jump back to beginning of loop
 exit_insert:	
-		sll	$t5, $a3, 2		#obtain address of a[i]
+		# get mempory offset of i
+		sll	$t5, $a3, 2		
+		# obtain address of a[i]
 		add	$t6, $a0, $t5
-		sw	$a2, 0($t6)		#store elem in a[i]
+		# store elem in a[i]
+		sw	$a2, 0($t6)		
 
 		jr	$ra	
 
-			
-b_search:					# Arguments: sorted array base addres and length of the sorted array and the element to find the sorted index of
-
-		sw	$a2, 0($t6)
-
-		jr	$ra	
-
-			
+					
 b_search:					# Arguments: sorted array base addres, length of the sorted array and the element to find the sorted index of
 		# to will be low
 		# t1 will be mid
@@ -38,6 +35,9 @@ b_search:					# Arguments: sorted array base addres, length of the sorted array 
 		# t3 will be high - 1
 		# t4 will be low + high
 		# t5 will be 2
+		# t6 will be the memory offset of mid
+		# t7 will be the address of a[mid]
+		# t8 will be a[mid]
 		
 						# Step 1: set low to -1, high to length
 		# set variables
@@ -54,10 +54,11 @@ search_loop:	addi 	$t3, $t2, -1
 		div	$t1, $t4, $t5
 						#	2.2: set high to mid if a[mid] is higher than the given element, else set low to mid
 		# get a[mid]
-		sll	$t6, $t6, 2
+		sll	$t6, $t1, 2
 		add	$t7, $a0, $t6
 		lw	$t8, 0($t7)
 		
+		# branch if a[mid] is smaller than element
 		blt	$t8, $a2, else
 		# set high to mid
 		move	$t2, $t1
@@ -73,7 +74,7 @@ exit_search:
 						# Step 3: return high
 
 
-i_sort:						# Arguments: unsorted array base addres and length of the unsorted array
+isort:						# Arguments: unsorted array base addres and length of the unsorted array
 		# s0 will be the argument: base addres of a
 		# s1 will be the argument: length
 		# s2 will be: base address of b
@@ -113,8 +114,10 @@ i_sort:						# Arguments: unsorted array base addres and length of the unsorted 
 		# branch if i >= length
 for_sort:	bge	$s3, $s1, exit_sort	
 						#	2.1: get the position of array[i] in the sorted array using binary search
+		# get address offset of i 
+		sll 	$t4, $s3, 2
 		# get a[i]
-		add 	$t3, $s0, $s3
+		add 	$t3, $s0, $t4
 		lw	$s4, 0($t3)
 		 
 		# set arugments to: sorted array base addres and length of the sorted array and the element to find the sorted index of
@@ -122,8 +125,16 @@ for_sort:	bge	$s3, $s1, exit_sort
 		move	$a1, $s1
 		move	$a2, $s4
 		
+		# store return address
+		addi	$sp, $sp, -4
+		sw	$ra, 0($sp)
+		
 		# call binary search
 		jal	b_search
+		
+		# get the return address back
+		lw	$ra, 0($sp)
+		addi	$sp, $sp, 4
 		
 		# extract arguments
 		move 	$t0, $v0
@@ -132,10 +143,18 @@ for_sort:	bge	$s3, $s1, exit_sort
 		move	$a0, $s2
 		move	$a1, $s3
 		move	$a2, $s4
-		move	$a3, $t0
+		move	$a3, $t3
+		
+		# store return address
+		addi	$sp, $sp, -4
+		sw	$ra, 0($sp)
 		
 		# call insertion
-		jal insertion		
+		jal insert
+		
+		# get the return address back
+		lw	$ra, 0($sp)
+		addi	$sp, $sp, 4	
 		
 		# increment i and jump back
 		addi	$s3, $s3, 1
@@ -146,7 +165,7 @@ exit_sort:
 		move	$s3, $zero
 		
 		# branch if i >= length
-for_copy	bge	$s3, $s1, exit_copy
+for_copy:	bge	$s3, $s1, exit_copy
 						#	3.1 set array[i] = sorted_array[i]
 		# get address offset of i
 		sll 	$t0, $s3, 2

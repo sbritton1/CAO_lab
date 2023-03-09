@@ -27,6 +27,8 @@ int binarySearch (int a[], int length, int elem)
 			low = mid;
 	}
 
+	std::cout<< high << "\n";
+
 	return high;
 }
 
